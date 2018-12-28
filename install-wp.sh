@@ -33,10 +33,10 @@ bot "Je crée le fichier de config WordPress de $i: ${cyan}$1${normal}"
 wp core config --dbname="" --dbuser="" --dbprefix="" --dbpass=""
 
 #bot "Je paramètre Wordpress :"
-#wp core install --url="" --title="Mutualisation OceanWP 5.0" --admin_user="sebastienserre" --admin_password="" --admin_email=""
+#wp core install --url="" --title="" --admin_user="" --admin_password="" --admin_email=""
 
 bot "et un multisite, c'est parti!"
-wp core multisite-install --url="" --title="Mutualisation OceanWP 5.0" --admin_user="sebastienserre" --admin_password="" --admin_email="" --subdomains
+wp core multisite-install --url="" --title="" --admin_user="" --admin_password="" --admin_email="" --subdomains
 
 bot "J'install le thème sir!"
 wp theme install oceanwp --activate
