@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
-
-
 function bot {
   echo -e "${blue}${bold}(｡◕‿◕｡)${normal}  $1"
 }
-
 # ============================================
 # = Ask some questions to make the fun going =
 # ============================================
@@ -15,41 +12,54 @@ then
 echo "Would you prefer it on subdomain ? yes/no"
 read subdomain
 fi
-echo $type ": " $subdomain
-exit
+echo "Now, I need database informations:"
+echo "Host:"
+read dbhost
+echo "Database name:"
+read dbname
+echo "Database Username:"
+read dbusername
+echo "Database Password:"
+read dbpassword
+echo "Database Prefix:"
+read dbprefix
+echo "Which language? leave empty for English. Example for french: fr_FR"
+read lang
+echo "What is the future URL of your website?"
+read url
+echo "please enter the admin email:"
+read email
+echo "please enter the admin username:"
+read wpusername
+echo "please enter the admin password:"
+read wppassword
+echo "any path or something need to run wp-cli? example: lando"
+read wppath
 
 #  =======================
 #  = The show must go on =
 #  =======================
 
-# Welcome !
-bot "${blue}${bold}Bonjour ! Je suis le bot!${normal}"
-echo -e "         Je vais installer WordPress pour vous! bon café!  ${cyan}$2${normal}"
+$wppath wp core download --locale=$lang
 
-bot "Je télécharge WordPress pour $i: ${cyan}$1${normal}"
-wp core download --locale=fr_FR
+$wppath wp core config --dbhost="$dbhost" --dbname="$dbname" --dbuser="$dbusername" --dbprefix="$dbprefix" --dbpass="$dbpassword"
 
-bot "Je crée le fichier de config WordPress de $i: ${cyan}$1${normal}"
-wp core config --dbname="" --dbuser="" --dbprefix="" --dbpass=""
+if [ $type = "classic" ]
+then
+$wppath wp core install --url="$url" --title="Website" --admin_user="$wpusername" --admin_password="$wppassword" --admin_email="$email"
+fi
 
-#bot "Je paramètre Wordpress :"
-#wp core install --url="" --title="" --admin_user="" --admin_password="" --admin_email=""
+if [ $type = "multisite" ] && [ $subdomain = "yes" ]
+then
+$wppath wp core multisite-install --url="$url" --title="Multisite" --admin_user="$wpusername" --admin_password="$wppassword" --admin_email="$email" --subdomains
+fi
+if [ $type = "multisite" ] && [ $subdomain = "no" ]
+then
+$wppath wp core multisite-install --url="$url" --title="Multisite" --admin_user="$wpusername" --admin_password="$wppassword" --admin_email="$email"
+fi
 
-bot "et un multisite, c'est parti!"
-wp core multisite-install --url="" --title="" --admin_user="" --admin_password="" --admin_email="" --subdomains
+$wppath wp option update timezone_string Europe/Paris
 
-bot "J'install le thème sir!"
-wp theme install oceanwp --activate
-
-bot "J'install les extensions de base sir!"
-wp plugin install wp-seopress really-simple-ssl sf-adminbar-tools wordpress-mu-domain-mapping --activate
-
-
-bot "je vous passe sur le bon fuseau horaire"
-wp option update timezone_string Europe/Paris
-
-bot "je vous crée le .htaccess"
-touch .htaccess
 echo "
 ## Created automatically by WP-CLI
 RewriteEngine On
@@ -66,12 +76,10 @@ RewriteRule ^(wp-(content|admin|includes).*) $1 [L]
 RewriteRule ^(.*\.php)$ $1 [L]
 RewriteRule . index.php [L]" >> .htaccess
 
-wp rewrite flush
-wp rewrite structure --hard '/%postname%'
+$wppath wp rewrite flush
+$wppath wp rewrite structure --hard '/%postname%'
 
 #rm wp.sh
 cd ../
 
-bot "La fameuse installation en 5 minutes !"
-
-bot "Amusez-vous bien avec WordPress!"
+bot "Ready to democratize publishing!"
