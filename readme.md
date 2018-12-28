@@ -9,7 +9,9 @@ With this script you can easily install WordPress Multisite in 3 minutes
 
 ## How it's working?  
 This is a bash script you have to launch from a terminal or an SSH access.  
-You must have [wp-cli](https://wp-cli.org/) installed.
+You must have [wp-cli](https://wp-cli.org/) installed.  
+You'll have to answer some question (same as in classical installation ) and then going to drink a coffee.  
+If all answers are correct, WordPress should be instaled before you finished drinking the coffee!
 
 ## Contribute
 Feel free to fork and send me PR!
