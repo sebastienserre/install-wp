@@ -35,6 +35,8 @@ echo "please enter the admin password:"
 read wppassword
 echo "any path or something need to run wp-cli? example: lando"
 read wppath
+echo "delete this script when installation finished ? yes/no"
+read delete
 
 #  =======================
 #  = The show must go on =
@@ -79,7 +81,9 @@ RewriteRule . index.php [L]" >> .htaccess
 $wppath wp rewrite flush
 $wppath wp rewrite structure --hard '/%postname%'
 
-#rm wp.sh
-cd ../
-
 bot "Ready to democratize publishing!"
+
+if [ $delete = "yes" ]
+then
+  rm install-wp.sh
+fi
