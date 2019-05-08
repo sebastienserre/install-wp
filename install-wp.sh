@@ -2,6 +2,9 @@
 function bot {
   echo -e "${blue}${bold}(｡◕‿◕｡)${normal}  $1"
 }
+
+
+
 # ============================================
 # = Ask some questions to make the fun going =
 # ============================================
@@ -42,7 +45,12 @@ read delete
 #  = The show must go on =
 #  =======================
 
+if [ -z "$lang" ]
+then
+$wppath wp core download
+else
 $wppath wp core download --locale=$lang
+fi
 
 $wppath wp core config --dbhost="$dbhost" --dbname="$dbname" --dbuser="$dbusername" --dbprefix="$dbprefix" --dbpass="$dbpassword"
 
@@ -62,31 +70,8 @@ fi
 
 $wppath wp option update timezone_string Europe/Paris
 
-echo "
-## Begin Created automatically by WP-CLI
-<files .htaccess>
-order allow,deny
-deny from all
-</files>
-RewriteEngine On
-RewriteBase /
-RewriteRule ^index\.php$ - [L]
-
-# add a trailing slash to /wp-admin
-RewriteRule ^wp-admin$ wp-admin/ [R=301,L]
-
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
-RewriteRule ^(wp-(content|admin|includes).*) $1 [L]
-RewriteRule ^(.*\.php)$ $1 [L]
-RewriteRule . index.php [L]
-# Use HTTP Strict Transport Security to force client to use secure connections only
-Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-## END Created automatically by WP-CLI" >> .htaccess
-
-$wppath wp rewrite flush
 $wppath wp rewrite structure --hard '/%postname%'
+$wppath wp rewrite flush --hard
 
 bot "Ready to democratize publishing!"
 
