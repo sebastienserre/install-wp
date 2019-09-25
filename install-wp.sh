@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
-function bot {
-  echo -e "${blue}${bold}(｡◕‿◕｡)${normal}  $1"
-}
-
-
 
 # ============================================
 # = Ask some questions to make the fun going =
@@ -15,17 +10,6 @@ then
 echo "Would you prefer it on subdomain ? yes/no"
 read subdomain
 fi
-echo "Now, I need database informations:"
-echo "Host:"
-read dbhost
-echo "Database name:"
-read dbname
-echo "Database Username:"
-read dbusername
-echo "Database Password:"
-read dbpassword
-echo "Database Prefix:"
-read dbprefix
 echo "Which language? leave empty for English. Example for french: fr_FR"
 read lang
 echo "What is the future URL of your website?"
@@ -52,7 +36,7 @@ else
 $wppath wp core download --locale=$lang
 fi
 
-$wppath wp core config --dbhost="$dbhost" --dbname="$dbname" --dbuser="$dbusername" --dbprefix="$dbprefix" --dbpass="$dbpassword"
+$wppath wp config create --prompt
 
 if [ $type = "classic" ]
 then
@@ -72,8 +56,6 @@ $wppath wp option update timezone_string Europe/Paris
 
 $wppath wp rewrite structure --hard '/%postname%'
 $wppath wp rewrite flush --hard
-
-bot "Ready to democratize publishing!"
 
 if [ $delete = "yes" ]
 then
