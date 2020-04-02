@@ -22,5 +22,5 @@ Feel free to fork and send me PR!
 My name is Sébastien SERRE and I'm a French professional WordPress Developper.  
 I'm often installed WP and think, I can save time by using wp-cli to make some tasks.  
 Find me on:  
-[Twitter](https://twitter.com/sebastienserre)  
+[Twitter](https://twitter.com/thivinfo)  
 [Thivinfo.com](https://thivinfo.com)
